@@ -1,3 +1,4 @@
+
 # Dropshipping Website Template
 
 This is a template for a dropshipping website that can be used for various dropshipping attempts. The website is designed to be responsive and includes features such as a product details modal, a checkout form with Stripe integration, and smooth scrolling animations.
