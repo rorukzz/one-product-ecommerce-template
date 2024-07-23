@@ -16,6 +16,7 @@ const orderSchema = new mongoose.Schema({
     chargeId: String,
     amount: Number,
     shippingInfo: Object,
+    productName: String,
     status: String
 });
 
@@ -36,7 +37,8 @@ app.post('/create-charge', async (req, res) => {
                 street: shippingInfo.street,
                 suburb: shippingInfo.suburb,
                 city: shippingInfo.city,
-                postal_code: shippingInfo.postal_code
+                postal_code: shippingInfo.postal_code,
+                product: shippingInfo.productName // Include product name in metadata
             }
         });
 
@@ -44,6 +46,7 @@ app.post('/create-charge', async (req, res) => {
             chargeId: charge.id,
             amount: charge.amount,
             shippingInfo: shippingInfo,
+            productName: shippingInfo.productName,
             status: 'Pending'
         });
         await order.save();
