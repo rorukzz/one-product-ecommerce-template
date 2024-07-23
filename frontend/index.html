@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Product - Drop Shipping</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #checkout {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .close-button {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .checkout-header {
+            font-size: 1.5rem;
+        }
+
+        .payment-icons img {
+            display: inline-block;
+            margin: 0 5px;
+            width: 40px;
+            height: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-bottom: 30px; /* Ensure padding at the bottom of the screen */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 0% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            transform: translateY(5%);
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 640px) {
+            .modal-content {
+                width: 95%;
+                transform: translateY(2%);
+            }
+
+            .modal-close {
+                font-size: 24px;
+            }
+
+            .modal h2 {
+                font-size: 1.5rem;
+            }
+
+            .modal p,
+            .modal ul {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-gray-900 text-white py-4">
+        <div class="container mx-auto flex justify-center items-center px-4">
+            <h1 class="text-3xl font-bold">Tech Product</h1>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gray-800 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4 animate-bounce">Amazing Tech Product</h2>
+            <p class="mb-8">Experience the best in technology with our latest product.</p>
+            <a id="learnMoreButton" href="#product" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded transition duration-300 transform hover:scale-105">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Product Display -->
+    <section id="product" class="py-20">
+        <div class="container mx-auto px-4 flex flex-col items-center">
+            <div id="productCard" class="bg-white shadow-lg rounded-lg overflow-hidden w-full md:w-1/2 mb-8 transform transition duration-500 hover:scale-105">
+                <img src="https://via.placeholder.com/600" alt="Product Image" class="w-full h-96 object-cover" id="productImage">
+                <div class="p-8 text-center">
+                    <h3 class="text-2xl font-bold mb-4" id="productTitle">Tech Product Name</h3>
+                    <p class="text-gray-700 mb-6" id="productDescription">This tech product offers the latest features and the best performance in its category. Perfect for tech enthusiasts and professionals.</p>
+                    <p id="productPrice" class="text-2xl font-bold text-yellow-500 mb-6">$199.99 AUD</p>
+                    <button id="buyNowButton" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded transition duration-300 transform hover:scale-105">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Details Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Tech Product Name</h2>
+            <img src="https://via.placeholder.com/600" alt="Product Image" class="w-full h-96 object-cover mb-4">
+            <p class="text-gray-700 mb-4">This tech product offers the latest features and the best performance in its category. Perfect for tech enthusiasts and professionals.</p>
+            <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>High-quality performance</li>
+                <li>Latest features</li>
+                <li>Perfect for tech enthusiasts</li>
+                <li>Affordable price</li>
+            </ul>
+            <p class="text-2xl font-bold text-yellow-500 mb-4">$199.99 AUD</p>
+            <p class="text-gray-700 mb-4">Shipping Costs: $10 AUD</p>
+            <p class="text-gray-700">Estimated Delivery Time: 5-7 business days</p>
+        </div>
+    </div>
+
+    <!-- Checkout Section -->
+    <section id="checkout" class="py-20 bg-gray-100 hidden">
+        <div class="container mx-auto px-4">
+            <div class="bg-white shadow-lg rounded-lg p-8 max-w-lg mx-auto relative">
+                <button id="closeButton" class="absolute top-4 right-4 bg-gray-200 hover:bg-gray-300 text-gray-800 close-button rounded">Close</button>
+                <h2 class="checkout-header font-bold text-center mb-8">Checkout</h2>
+                <form id="payment-form">
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-700 font-bold mb-2">Name</label>
+                        <input type="text" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Your Name" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
+                        <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Your Email" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="street" class="block text-gray-700 font-bold mb-2">Street</label>
+                        <input type="text" id="street" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Your Street" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="suburb" class="block text-gray-700 font-bold mb-2">Suburb</label>
+                        <input type="text" id="suburb" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Your Suburb" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="city" class="block text-gray-700 font-bold mb-2">City</label>
+                        <input type="text" id="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Your City" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="postal_code" class="block text-gray-700 font-bold mb-2">Postal Code</label>
+                        <input type="text" id="postal_code" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Your Postal Code" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="card-element" class="block text-gray-700 font-bold mb-2">Credit or debit card</label>
+                        <div id="card-element" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <!-- Stripe Element will be inserted here -->
+                        </div>
+                    </div>
+                    <div class="payment-icons text-center mb-4">
+                        <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa">
+                        <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="MasterCard">
+                        <img src="https://img.icons8.com/color/48/000000/amex.png" alt="American Express">
+                        <img src="https://img.icons8.com/color/48/000000/discover.png" alt="Discover">
+                    </div>
+                    <div id="card-errors" role="alert" class="text-red-500 mb-4"></div>
+                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded w-full transition duration-300 transform hover:scale-105">Pay Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-4">
+        <div class="container mx-auto text-center px-4">
+            <p>&copy; 2024 Tech Product. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Your Stripe publishable key
+        const stripe = Stripe('pk_test_51OlKbKH26IvmDoLFjK1XhMS3wkY5EOi420Mym5pprY6wrHCEE9tXBvUfNQP5Radp3IJbQdlTa7QaKAdGyJXAlIqS00CNu5tJT5');
+
+        // Create an instance of Elements
+        const elements = stripe.elements();
+
+        // Custom styling for the Stripe Elements
+        const style = {
+            base: {
+                color: '#32325d',
+                fontFamily: '"Inter", sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+
+        // Create an instance of the card Element
+        const card = elements.create('card', { style: style });
+
+        // Add an instance of the card Element into the `card-element` div
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element
+        card.on('change', function (event) {
+            const displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        // Handle form submission
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const { token, error } = await stripe.createToken(card);
+
+            if (error) {
+                const errorElement = document.getElementById('card-errors');
+                errorElement.textContent = error.message;
+            } else {
+                // Send the token to your server
+                stripeTokenHandler(token);
+            }
+        });
+
+        // Submit the token to your server
+        async function stripeTokenHandler(token) {
+            const response = await fetch('http://localhost:3000/create-charge', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token: token.id,
+                    amount: 19999 // Amount in cents for $199.99 AUD
+                })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('Payment successful!');
+            } else {
+                alert('Payment failed: ' + data.message);
+            }
+        }
+
+        // Show checkout section when Buy Now button is clicked
+        document.getElementById('buyNowButton').addEventListener('click', function () {
+            const checkoutSection = document.getElementById('checkout');
+            checkoutSection.style.display = 'block';
+            setTimeout(() => {
+                checkoutSection.classList.remove('hidden');
+                checkoutSection.classList.add('visible');
+            }, 10);  // Adding a slight delay to ensure the transition applies correctly
+            checkoutSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Hide checkout section when Close button is clicked
+        document.getElementById('closeButton').addEventListener('click', function () {
+            const checkoutSection = document.getElementById('checkout');
+            checkoutSection.classList.remove('visible');
+            checkoutSection.classList.add('hidden');
+            setTimeout(() => {
+                checkoutSection.style.display = 'none';
+                document.getElementById('productCard').scrollIntoView({ behavior: 'smooth' });
+            }, 500);  // Match the transition duration for a smooth hide
+        });
+
+        // Smooth scroll for "Learn More" button
+        document.getElementById('learnMoreButton').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('productCard').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Show product details modal
+        document.getElementById('productImage').addEventListener('click', function () {
+            const modal = document.getElementById('productModal');
+            modal.style.display = 'block';
+        });
+
+        document.getElementById('productDescription').addEventListener('click', function () {
+            const modal = document.getElementById('productModal');
+            modal.style.display = 'block';
+        });
+
+        // Close product details modal
+        document.querySelector('.modal-close').addEventListener('click', function () {
+            const modal = document.getElementById('productModal');
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
