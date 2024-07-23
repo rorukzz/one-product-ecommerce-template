@@ -29,7 +29,7 @@ Here are some screenshots of the website:
 ![Screenshot 3](https://i.ibb.co/yVnw2QN/ecommerce-3.png)
 ![Screenshot 4](https://i.ibb.co/swLDJp3/ecommerce-4.png)
 ![Screenshot 5](https://i.ibb.co/84FDHHC/ecommerce-5.png)
-![Screenshot 6](https://i.ibb.co/SQ3KwLY/ecommerce-6.png)
+![Screenshot 6]((https://i.ibb.co/SQ3KwLY/ecommerce-6.png)
 
 ## How to Use
 
