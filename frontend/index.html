@@ -265,19 +265,26 @@
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const street = document.getElementById('street').value;
+            const suburb = document.getElementById('suburb').value;
+            const city = document.getElementById('city').value;
+            const postal_code = document.getElementById('postal_code').value;
+
             const { token, error } = await stripe.createToken(card);
 
             if (error) {
                 const errorElement = document.getElementById('card-errors');
                 errorElement.textContent = error.message;
             } else {
-                // Send the token to your server
-                stripeTokenHandler(token);
+                // Send the token and form data to your server
+                stripeTokenHandler(token, { name, email, street, suburb, city, postal_code });
             }
         });
 
-        // Submit the token to your server
-        async function stripeTokenHandler(token) {
+        // Submit the token and form data to your server
+        async function stripeTokenHandler(token, shippingInfo) {
             const response = await fetch('http://localhost:3000/create-charge', {
                 method: 'POST',
                 headers: {
@@ -285,13 +292,15 @@
                 },
                 body: JSON.stringify({
                     token: token.id,
-                    amount: 19999 // Amount in cents for $199.99 AUD
+                    amount: 19999, // Amount in cents for $199.99 AUD
+                    shippingInfo
                 })
             });
 
             const data = await response.json();
             if (data.success) {
                 alert('Payment successful!');
+                // Optionally redirect to a success page
             } else {
                 alert('Payment failed: ' + data.message);
             }
